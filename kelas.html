@@ -1,0 +1,167 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Akses Kelas Digital - Kurikulum Merdeka</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+</head>
+<body class="bg-gray-100 font-sans">
+
+    <header class="bg-red-600 text-white shadow-md p-4 flex justify-between items-center border-b-4 border-white">
+        <div>
+            <h1 class="text-lg font-bold uppercase">📝 Panel Guru Kelas <span id="nomor-kelas-title">-</span></h1>
+            <p id="nama-sekolah-mini" class="text-xs opacity-90">Memuat nama sekolah...</p>
+        </div>
+        <a href="index.html" class="bg-white text-red-600 text-xs font-bold px-3 py-1.5 rounded hover:bg-gray-100 transition shadow">
+            ⬅️ Keluar
+        </a>
+    </header>
+
+    <main class="container mx-auto px-4 py-6 space-y-6">
+
+        <div class="bg-white rounded-xl shadow p-5 border-t-4 border-red-500">
+            <div class="text-xs font-bold text-red-500 uppercase mb-1">Pustaka Digital Guru</div>
+            <h2 class="text-base font-bold text-gray-900 mb-2">📚 Buku Pegangan Guru (Kurikulum Merdeka)</h2>
+            <p class="text-xs text-gray-500 mb-4">Membantu guru melihat panduan mengajar harian langsung dari HP Android tanpa menghabiskan memori perangkat.</p>
+            
+            <div class="space-y-3">
+                <div class="flex justify-between items-center p-2 bg-gray-50 rounded border text-sm">
+                    <div>
+                        <span class="font-bold block text-gray-800">Matematika</span>
+                        <span class="text-xs text-gray-400">Buku Panduan Guru Resmi</span>
+                    </div>
+                    <a href="https://docs.google.com/viewer?url=https://buku.kemdikbud.go.id/katalog/buku-panduan-guru-matematika-untuk-sd-kelas-iii.pdf" target="_blank" class="bg-red-600 text-white text-xs px-3 py-1.5 rounded font-bold hover:bg-red-700">Baca Online</a>
+                </div>
+                <div class="flex justify-between items-center p-2 bg-gray-50 rounded border text-sm">
+                    <div>
+                        <span class="font-bold block text-gray-800">Bahasa Indonesia</span>
+                        <span class="text-xs text-gray-400">Buku Panduan Guru Resmi</span>
+                    </div>
+                    <a href="https://docs.google.com/viewer?url=https://buku.kemdikbud.go.id/katalog/buku-panduan-guru-bahasa-indonesia-untuk-sd-kelas-iii.pdf" target="_blank" class="bg-red-600 text-white text-xs px-3 py-1.5 rounded font-bold hover:bg-red-700">Baca Online</a>
+                </div>
+            </div>
+        </div>
+
+        <div class="bg-white rounded-xl shadow p-5 border-t-4 border-red-500">
+            <div class="text-xs font-bold text-red-500 uppercase mb-1">Manajemen Kelas</div>
+            <h2 class="text-base font-bold text-gray-900 mb-3">👥 Daftar Siswa & Laporan Hasil Belajar (Real-Time)</h2>
+            
+            <div class="overflow-x-auto">
+                <table class="w-full text-left border-collapse text-xs md:text-sm">
+                    <thead>
+                        <tr class="bg-gray-100 text-gray-700 uppercase font-bold border-b">
+                            <th class="p-2">Nama Murid</th>
+                            <th class="p-2 text-center">Absen (H/S/A)</th>
+                            <th class="p-2 text-center">Nilai Rata²</th>
+                            <th class="p-2 text-center">Aksi</th>
+                        </tr>
+                    </thead>
+                    <tbody id="tabel-siswa">
+                        <tr>
+                            <td colspan="4" class="p-4 text-center text-gray-500 text-xs">⏳ Sedang memuat data murid dari database TU...</td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+
+    </main>
+
+    <script type="module">
+        import { initializeApp } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-app.js";
+        import { getFirestore, doc, getDoc, collection, getDocs } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-firestore.js";
+
+        const firebaseConfig = {
+          apiKey: "AIzaSyCCfF6fGPrZWMOVcVUIDzzcLC4dFEl9LBY",
+          authDomain: "sekolah-4e62f.firebaseapp.com",
+          projectId: "sekolah-4e62f",
+          storageBucket: "sekolah-4e62f.firebasestorage.app",
+          messagingSenderId: "1018984142264",
+          appId: "1:1018984142264:web:e34fe5fd50766a6100ab4d"
+        };
+
+        const app = initializeApp(firebaseConfig);
+        const db = getFirestore(app);
+
+        const urlParams = new URLSearchParams(window.location.search);
+        const nomorKelas = urlParams.get('id') || '1';
+        document.getElementById("nomor-kelas-title").innerText = nomorKelas;
+
+        // 1. Memuat nama sekolah otomatis
+        async function muatIdentitasSekolah() {
+            try {
+                const docRef = doc(db, "profil_sekolah", "identitas");
+                const docSnap = await getDoc(docRef);
+                if (docSnap.exists()) {
+                    document.getElementById("nama-sekolah-mini").innerText = docSnap.data().nama_sekolah;
+                }
+            } catch (e) { console.error(e); }
+        }
+
+        // 2. Memuat data siswa asli dari database TU secara dinamis
+        async function muatDataSiswaAsli() {
+            const tabel = document.getElementById("tabel-siswa");
+            try {
+                // Mengambil data dari sub-koleksi kelas yang sesuai
+                const querySnapshot = await getDocs(collection(db, "data_siswa", nomorKelas, "daftar"));
+                
+                if (querySnapshot.empty) {
+                    tabel.innerHTML = `<tr><td colspan="4" class="p-4 text-center text-gray-500 text-xs">📭 Belum ada data murid di kelas ini. Silakan input via Panel TU.</td></tr>`;
+                    return;
+                }
+
+                tabel.innerHTML = ""; // Bersihkan loading text
+                
+                querySnapshot.forEach((res) => {
+                    const siswa = res.data();
+                    const barisHtml = `
+                        <tr class="border-b hover:bg-gray-50">
+                            <td class="p-2">
+                                <span class="font-bold block text-gray-900">${siswa.nama_murid}</span>
+                                <span class="text-[10px] text-gray-400">Wali: ${siswa.nama_wali}</span>
+                            </td>
+                            <td class="p-2 text-center text-gray-600">${siswa.hadir || 0} H / ${siswa.sakit || 0} S / ${siswa.absen || 0} A</td>
+                            <td class="p-2 text-center font-bold text-green-600">${siswa.nilai || 0}</td>
+                            <td class="p-2 text-center">
+                                <button onclick="kirimLaporanWA('${siswa.nama_murid}', '${siswa.no_wa}', '${siswa.hadir || 0}', '${siswa.sakit || 0}', '${siswa.nilai || 0}', '${siswa.catatan || 'Belum ada catatan.'}')" class="bg-green-600 text-white text-[10px] font-bold px-2 py-1 rounded hover:bg-green-700">Kirim WA</button>
+                            </td>
+                        </tr>
+                    `;
+                    tabel.innerHTML += barisHtml;
+                });
+
+            } catch (error) {
+                console.error("Gagal memuat siswa:", error);
+                tabel.innerHTML = `<tr><td colspan="4" class="p-4 text-center text-red-500 text-xs">⚠️ Gagal memuat data siswa.</td></tr>`;
+            }
+        }
+
+        // Jalankan fungsi saat halaman dibuka
+        window.onload = function() {
+            muatIdentitasSekolah();
+            muatDataSiswaAsli();
+        };
+    </script>
+
+    <script>
+        // Fungsi merangkai pesan otomatis ke WA Wali Murid
+        function kirimLaporanWA(namaSiswa, nomorWali, hadir, sakit, nilai, catatan) {
+            const namaSekolah = document.getElementById("nama-sekolah-mini").innerText;
+            const nomorKelas = document.getElementById("nomor-kelas-title").innerText;
+            
+            const isiPesan = `Yth. Bapak/Ibu Wali Murid dari *${namaSiswa}*,\n\n` +
+                             `Berikut adalah Laporan Perkembangan Siswa Berkala dari *${namaSekolah}*:\n\n` +
+                             `* Kelas: ${nomorKelas}\n` +
+                             `* Kehadiran: ${hadir} Hari Hadir, ${sakit} Hari Sakit\n` +
+                             `* Nilai Rata-rata: ${nilai}\n` +
+                             `* Catatan Guru: _${catatan}_\n\n` +
+                             `Terima kasih atas bimbingan dan kerja samanya di rumah.\n\n` +
+                             `-- *Wali Kelas ${nomorKelas}* --`;
+
+            const urlWhatsApp = `https://api.whatsapp.com/send?phone=${nomorWali}&text=${encodeURIComponent(isiPesan)}`;
+            window.open(urlWhatsApp, '_blank');
+        }
+    </script>
+</body>
+</html>
