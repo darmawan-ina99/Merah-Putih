@@ -1,0 +1,228 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Struktur Organisasi & Dasbor Digital Sekolah</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+</head>
+<body class="bg-gray-100 font-sans text-gray-800">
+
+    <header class="bg-red-700 text-white text-center py-6 shadow-md border-b-4 border-white">
+        <h1 id="nama-sekolah-title" class="text-xl md:text-3xl font-bold uppercase tracking-wider">SDN 1 CIHERANG</h1>
+        <p class="text-xs md:text-sm opacity-90 mt-1">Struktur Organisasi & Panel Administrasi Kurikulum Merdeka</p>
+    </header>
+
+    <main class="container mx-auto px-4 py-8 max-w-4xl space-y-8">
+
+        <section class="bg-white rounded-xl shadow-md p-6 border-t-4 border-red-600">
+            <h2 class="text-center text-lg font-bold uppercase text-gray-800 tracking-wide mb-6">🏛️ Struktur Organisasi Satuan Pendidikan</h2>
+            
+            <div class="flex flex-col items-center space-y-4">
+                
+                <div class="w-64 bg-amber-50 border-2 border-amber-500 rounded-lg p-3 text-center shadow-sm">
+                    <span class="text-[10px] font-bold uppercase text-amber-700 block">🏆 Kepala Sekolah</span>
+                    <span id="staf-kasek" class="text-sm font-bold block text-gray-900">Memuat...</span>
+                    <span id="nip-kasek" class="text-[9px] text-gray-500 block">NIP: -</span>
+                </div>
+
+                <div class="w-0.5 h-4 bg-gray-300"></div>
+
+                <div class="grid grid-cols-2 gap-4 w-full max-w-xl text-center">
+                    <div class="bg-blue-50 border border-blue-400 rounded-lg p-2.5 shadow-sm">
+                        <span class="text-[10px] font-bold uppercase text-blue-700 block">🤝 Komite Sekolah</span>
+                        <span id="staf-komite" class="text-xs font-bold block text-gray-800">Memuat...</span>
+                    </div>
+                    <div class="bg-blue-50 border border-blue-400 rounded-lg p-2.5 shadow-sm">
+                        <span class="text-[10px] font-bold uppercase text-blue-700 block">💼 Tata Usaha (TU)</span>
+                        <span id="staf-tu" class="text-xs font-bold block text-gray-800">Memuat...</span>
+                    </div>
+                </div>
+
+                <div class="w-0.5 h-6 bg-gray-300"></div>
+
+                <div class="w-full">
+                    <span class="text-center block text-[10px] font-bold uppercase text-gray-400 tracking-wider mb-2">📝 Lini Guru Kelas / Akses Kelas Digital (Klik Kelas Untuk Nilai & Rapor)</span>
+                    <div class="grid grid-cols-2 md:grid-cols-3 gap-3">
+                        
+                        <a href="kelas.html?id=1" class="bg-white border-2 border-red-500 hover:bg-red-50 rounded-xl p-3 text-center shadow-sm transition block group">
+                            <span class="bg-red-600 text-white font-bold text-xs px-2 py-0.5 rounded-full inline-block mb-1 group-hover:scale-105 transition">Kelas 1</span>
+                            <span id="wali-kelas-1" class="text-xs font-bold block text-gray-800">Memuat...</span>
+                            <span id="nip-kelas-1" class="text-[9px] text-gray-400 block">NIP: -</span>
+                        </a>
+
+                        <a href="kelas.html?id=2" class="bg-white border-2 border-red-500 hover:bg-red-50 rounded-xl p-3 text-center shadow-sm transition block group">
+                            <span class="bg-red-600 text-white font-bold text-xs px-2 py-0.5 rounded-full inline-block mb-1 group-hover:scale-105 transition">Kelas 2</span>
+                            <span id="wali-kelas-2" class="text-xs font-bold block text-gray-800">Memuat...</span>
+                            <span id="nip-kelas-2" class="text-[9px] text-gray-400 block">NIP: -</span>
+                        </a>
+
+                        <a href="kelas.html?id=3" class="bg-white border-2 border-red-500 hover:bg-red-50 rounded-xl p-3 text-center shadow-sm transition block group">
+                            <span class="bg-red-600 text-white font-bold text-xs px-2 py-0.5 rounded-full inline-block mb-1 group-hover:scale-105 transition">Kelas 3</span>
+                            <span id="wali-kelas-3" class="text-xs font-bold block text-gray-800">Memuat...</span>
+                            <span id="nip-kelas-3" class="text-[9px] text-gray-400 block">NIP: -</span>
+                        </a>
+
+                        <a href="kelas.html?id=4" class="bg-white border-2 border-red-500 hover:bg-red-50 rounded-xl p-3 text-center shadow-sm transition block group">
+                            <span class="bg-red-600 text-white font-bold text-xs px-2 py-0.5 rounded-full inline-block mb-1 group-hover:scale-105 transition">Kelas 4</span>
+                            <span id="wali-kelas-4" class="text-xs font-bold block text-gray-800">Memuat...</span>
+                            <span id="nip-kelas-4" class="text-[9px] text-gray-400 block">NIP: -</span>
+                        </a>
+
+                        <a href="kelas.html?id=5" class="bg-white border-2 border-red-500 hover:bg-red-50 rounded-xl p-3 text-center shadow-sm transition block group">
+                            <span class="bg-red-600 text-white font-bold text-xs px-2 py-0.5 rounded-full inline-block mb-1 group-hover:scale-105 transition">Kelas 5</span>
+                            <span id="wali-kelas-5" class="text-xs font-bold block text-gray-800">Memuat...</span>
+                            <span id="nip-kelas-5" class="text-[9px] text-gray-400 block">NIP: -</span>
+                        </a>
+
+                        <a href="kelas.html?id=6" class="bg-white border-2 border-red-500 hover:bg-red-50 rounded-xl p-3 text-center shadow-sm transition block group">
+                            <span class="bg-red-600 text-white font-bold text-xs px-2 py-0.5 rounded-full inline-block mb-1 group-hover:scale-105 transition">Kelas 6</span>
+                            <span id="wali-kelas-6" class="text-xs font-bold block text-gray-800">Memuat...</span>
+                            <span id="nip-kelas-6" class="text-[9px] text-gray-400 block">NIP: -</span>
+                        </a>
+
+                    </div>
+                </div>
+
+                <div class="w-0.5 h-4 bg-gray-300"></div>
+
+                <div class="grid grid-cols-2 gap-3 w-full max-w-xl text-center">
+                    <div class="bg-purple-50 border border-purple-400 rounded-lg p-2.5 shadow-sm">
+                        <span class="text-[10px] font-bold uppercase text-purple-700 block">🕌/🏃‍♂️ Guru Mata Pelajaran</span>
+                        <div id="wadah-guru-mapel" class="text-xs font-bold text-gray-800 space-y-1">Memuat...</div>
+                    </div>
+                    <div class="bg-purple-50 border border-purple-400 rounded-lg p-2.5 shadow-sm">
+                        <span class="text-[10px] font-bold uppercase text-purple-700 block">🧬 Guru Pendamping / BK</span>
+                        <span id="staf-bk" class="text-xs font-bold block text-gray-800">Memuat...</span>
+                    </div>
+                </div>
+
+                <div class="w-0.5 h-4 bg-gray-300"></div>
+
+                <div class="w-full max-w-sm bg-gray-50 border border-gray-300 rounded-lg p-2.5 text-center shadow-sm">
+                    <span class="text-[10px] font-bold uppercase text-gray-500 block">🛠️ Tenaga Pendukung / Penjaga Sekolah / Satpam</span>
+                    <div id="wadah-supporting-staff" class="text-xs font-bold text-gray-800 space-y-1 mt-1">Memuat...</div>
+                </div>
+
+            </div>
+        </section>
+
+        <section class="bg-white rounded-xl shadow-md p-5 border-t-4 border-gray-700">
+            <h3 class="text-xs font-bold text-red-600 uppercase mb-1">Pusat Kendali Administrasi</h3>
+            <h2 class="text-sm font-bold text-gray-900 mb-3">🛠️ Panel Pengisian & Pembaruan Data Berkala</h2>
+            
+            <div class="grid grid-cols-1 sm:grid-cols-3 gap-2">
+                <a href="kasek.html" class="bg-gray-800 hover:bg-gray-900 text-white text-center font-bold py-2.5 rounded-lg text-xs shadow transition">
+                    👑 Input Profil & Kasek
+                </a>
+                <a href="pegawai.html" class="bg-blue-600 hover:bg-blue-700 text-white text-center font-bold py-2.5 rounded-lg text-xs shadow transition">
+                    📋 Input Semua Pegawai/ASN
+                </a>
+                <a href="tu.html" class="bg-gray-800 hover:bg-gray-900 text-white text-center font-bold py-2.5 rounded-lg text-xs shadow transition">
+                    💻 Panel TU (Daftar Siswa)
+                </a>
+            </div>
+        </section>
+
+    </main>
+
+    <script type="module">
+        import { initializeApp } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-app.js";
+        import { getFirestore, doc, getDoc, collection, getDocs } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-firestore.js";
+
+        const firebaseConfig = {
+          apiKey: "AIzaSyCCfF6fGPrZWMOVcVUIDzzcLC4dFEl9LBY",
+          authDomain: "sekolah-4e62f.firebaseapp.com",
+          projectId: "sekolah-4e62f",
+          storageBucket: "sekolah-4e62f.firebasestorage.app",
+          messagingSenderId: "1018984142264",
+          appId: "1:1018984142264:web:e34fe5fd50766a6100ab4d"
+        };
+
+        const app = initializeApp(firebaseConfig);
+        const db = getFirestore(app);
+
+        // 1. Ambil Profil Sekolah Utama
+        async function muatProfilSekolah() {
+            try {
+                const docSnap = await getDoc(doc(db, "profil_sekolah", "identitas"));
+                if (docSnap.exists()) {
+                    const data = docSnap.data();
+                    document.getElementById("nama-sekolah-title").innerText = data.nama_sekolah || "SDN 1 CIHERANG";
+                    document.getElementById("staf-kasek").innerText = data.nama_kasek || "-";
+                    document.getElementById("nip-kasek").innerText = "NIP: " + (data.nip_kasek || "-");
+                    document.getElementById("staf-tu").innerText = data.nama_tu || "-";
+                    document.getElementById("staf-bk").innerText = data.nama_bk || "-";
+                }
+            } catch (e) { console.error(e); }
+        }
+
+        // 2. Ambil Data Pegawai & Petakan ke Struktur Organisasi secara Otomatis
+        async function petakanStrukturPegawai() {
+            try {
+                const snapshot = await getDocs(collection(db, "data_kepegawaian"));
+                
+                let listMapel = [];
+                let listSupporting = [];
+                let wadahWali = { "1": false, "2": false, "3": false, "4": false, "5": false, "6": false };
+
+                snapshot.forEach((docRes) => {
+                    const peg = docRes.data();
+                    const jab = peg.jabatan;
+
+                    // Petakan Wali Kelas 1-6
+                    if (jab.startsWith("Wali Kelas")) {
+                        const angkaKelas = jab.replace("Wali Kelas ", "").trim();
+                        if (document.getElementById("wali-kelas-" + angkaKelas)) {
+                            document.getElementById("wali-kelas-" + angkaKelas).innerText = peg.nama;
+                            document.getElementById("nip-kelas-" + angkaKelas).innerText = "NIP: " + peg.nip;
+                            wadahWali[angkaKelas] = true;
+                        }
+                    } 
+                    // Petakan Guru Mapel
+                    else if (jab.startsWith("Guru Agama") || jab === "Guru PJOK") {
+                        listMapel.push(`${peg.nama} <span class="text-[10px] text-purple-600 block font-normal">(NIP: ${peg.nip})</span>`);
+                    }
+                    // Petakan Staf Pendukung (Penjaga & Satpam)
+                    else if (jab === "Penjaga Sekolah" || jab.startsWith("Petugas Keamanan")) {
+                        listSupporting.push(`${peg.nama} <span class="text-[10px] text-gray-500 block font-normal">(${jab})</span>`);
+                    }
+                });
+
+                // Jika ada Wali Kelas yang belum diinput di SIM-PTK, tampilkan tanda strip
+                for (let i = 1; i <= 6; i++) {
+                    if (!wadahWali[i]) {
+                        document.getElementById("wali-kelas-" + i).innerText = "-";
+                        document.getElementById("nip-kelas-" + i).innerText = "Belum diinput";
+                    }
+                }
+
+                // Tampilkan Guru Mapel
+                const wadahMapelEl = document.getElementById("wadah-guru-mapel");
+                if (listMapel.length > 0) {
+                    wadahMapelEl.innerHTML = listMapel.join("<div class='h-1'></div>");
+                } else {
+                    wadahMapelEl.innerText = "-";
+                }
+
+                // Tampilkan Penjaga Sekolah & Satpam
+                const wadahSupportEl = document.getElementById("wadah-supporting-staff");
+                if (listSupporting.length > 0) {
+                    wadahSupportEl.innerHTML = listSupporting.join("<div class='h-1'></div>");
+                } else {
+                    wadahSupportEl.innerText = "-";
+                }
+
+            } catch (e) {
+                console.error("Gagal memetakan struktur kepegawaian:", e);
+            }
+        }
+
+        // Jalankan sinkronisasi data saat aplikasi dibuka di HP
+        window.onload = function() {
+            muatProfilSekolah();
+            petakanStrukturPegawai();
+        }
+    </script>
+</body>
+</html>
