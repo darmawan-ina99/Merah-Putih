@@ -1,0 +1,272 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Akses Kelas Digital - Kurikulum Merdeka</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+</head>
+<body class="bg-gray-100 font-sans">
+
+    <header class="bg-red-600 text-white shadow-md p-4 flex justify-between items-center border-b-4 border-white">
+        <div>
+            <h1 class="text-lg font-bold uppercase">📝 Panel Guru Kelas <span id="nomor-kelas-title">-</span></h1>
+            <p id="nama-sekolah-mini" class="text-xs opacity-90">Memuat nama sekolah...</p>
+        </div>
+        <a href="index.html" class="bg-white text-red-600 text-xs font-bold px-3 py-1.5 rounded hover:bg-gray-100 transition shadow">
+            ⬅️ Keluar
+        </a>
+    </header>
+
+    <main class="container mx-auto px-4 py-6 space-y-6">
+
+        <div class="bg-white rounded-xl shadow p-5 border-t-4 border-red-500">
+            <div class="text-xs font-bold text-red-500 uppercase mb-1">Pustaka Digital Guru Kelas <span class="no-kelas-text"></span></div>
+            <h2 class="text-base font-bold text-gray-900 mb-2">📚 Pustaka Buku Panduan Guru Lengkap semua Mapel</h2>
+            <p class="text-xs text-gray-500 mb-4">Berikut adalah daftar buku panduan mengajar resmi Kemdikbudristek RI Kurikulum Merdeka untuk Tingkat Kelas <span class="no-kelas-text"></span>.</p>
+            
+            <div id="wadah-buku-dinamis" class="grid grid-cols-1 md:grid-cols-2 gap-3">
+                <p class="text-xs text-gray-400 italic col-span-full">Sedang memuat katalog buku lengkap...</p>
+            </div>
+        </div>
+
+        <div class="bg-white rounded-xl shadow p-5 border-t-4 border-red-500">
+            <div class="text-xs font-bold text-red-500 uppercase mb-1">Manajemen Kelas</div>
+            <h2 class="text-base font-bold text-gray-900 mb-3">👥 Daftar Siswa & Laporan Hasil Belajar (Real-Time)</h2>
+            
+            <div class="overflow-x-auto">
+                <table class="w-full text-left border-collapse text-xs md:text-sm">
+                    <thead>
+                        <tr class="bg-gray-100 text-gray-700 uppercase font-bold border-b">
+                            <th class="p-2">Nama Murid</th>
+                            <th class="p-2 text-center">Absen (H/S/A)</th>
+                            <th class="p-2 text-center">Nilai Rata²</th>
+                            <th class="p-2 text-center">Aksi</th>
+                        </tr>
+                    </thead>
+                    <tbody id="tabel-siswa">
+                        <tr>
+                            <td colspan="4" class="p-4 text-center text-gray-500 text-xs">⏳ Sedang memuat data murid asli dari database TU...</td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+
+    </main>
+
+    <script type="module">
+        import { initializeApp } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-app.js";
+        import { getFirestore, doc, getDoc, collection, getDocs, updateDoc } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-firestore.js";
+
+        const firebaseConfig = {
+          apiKey: "AIzaSyCCfF6fGPrZWMOVcVUIDzzcLC4dFEl9LBY",
+          authDomain: "sekolah-4e62f.firebaseapp.com",
+          projectId: "sekolah-4e62f",
+          storageBucket: "sekolah-4e62f.firebasestorage.app",
+          messagingSenderId: "1018984142264",
+          appId: "1:1018984142264:web:e34fe5fd50766a6100ab4d"
+        };
+
+        const app = initializeApp(firebaseConfig);
+        const db = getFirestore(app);
+
+        const urlParams = new URLSearchParams(window.location.search);
+        const nomorKelas = urlParams.get('id') || '1';
+        document.getElementById("nomor-kelas-title").innerText = nomorKelas;
+        
+        document.querySelectorAll(".no-kelas-text").forEach(el => el.innerText = nomorKelas);
+
+        // DATABASE KATALOG BUKU RESMI LENGKAP KELAS 1 - 6 (SEMUA MATA PELAJARAN)
+        const databaseBukuLengkap = {
+            "1": [
+                { mapel: "Bahasa Indonesia", detail: "Aku Bisa!", url: "https://buku.kemdikbud.go.id/katalog/buku-panduan-guru-bahasa-indonesia-aku-bisa-untuk-sd-kelas-i" },
+                { mapel: "Matematika Vol 1", detail: "Belajar Bersama Temanmu", url: "https://buku.kemdikbud.go.id/katalog/buku-panduan-guru-matematika-untuk-sekolah-dasar-kelas-i-volume-1" },
+                { mapel: "Matematika Vol 2", detail: "Belajar Bersama Temanmu", url: "https://buku.kemdikbud.go.id/katalog/buku-panduan-guru-matematika-untuk-sekolah-dasar-kelas-i-volume-2" },
+                { mapel: "Pendidikan Pancasila", detail: "Buku Panduan Utama", url: "https://buku.kemdikbud.go.id/katalog/buku-panduan-guru-pendidikan-pancasila-untuk-sdmi-kelas-i" },
+                { mapel: "Bahasa Inggris", detail: "My Next Words Grade 1", url: "https://buku.kemdikbud.go.id/katalog/buku-panduan-guru-bahasa-inggris-for-esl-students-my-next-words-grade-1-untuk-sd-kelas-i" },
+                { mapel: "Seni Rupa", detail: "Panduan Guru Seni Rupa", url: "https://buku.kemdikbud.go.id/katalog/buku-panduan-guru-seni-rupa-untuk-sd-kelas-i" },
+                { mapel: "Seni Musik", detail: "Panduan Guru Seni Musik", url: "https://buku.kemdikbud.go.id/katalog/buku-panduan-guru-seni-musik-untuk-sd-kelas-i" },
+                { mapel: "Seni Tari", detail: "Panduan Guru Seni Tari", url: "https://buku.kemdikbud.go.id/katalog/buku-panduan-guru-seni-tari-untuk-sd-kelas-i" },
+                { mapel: "Seni Teater", detail: "Panduan Guru Seni Teater", url: "https://buku.kemdikbud.go.id/katalog/buku-panduan-guru-seni-teater-untuk-sd-kelas-i" }
+            ],
+            "2": [
+                { mapel: "Bahasa Indonesia", detail: "Kawan Seiring", url: "https://buku.kemdikbud.go.id/katalog/buku-panduan-guru-bahasa-indonesia-kawan-seiring-untuk-sd-kelas-ii" },
+                { mapel: "Matematika Vol 1", detail: "Belajar Bersama Temanmu", url: "https://buku.kemdikbud.go.id/katalog/buku-panduan-guru-matematika-untuk-sekolah-dasar-kelas-ii-volume-1" },
+                { mapel: "Matematika Vol 2", detail: "Belajar Bersama Temanmu", url: "https://buku.kemdikbud.go.id/katalog/buku-panduan-guru-matematika-untuk-sekolah-dasar-kelas-ii-volume-2" },
+                { mapel: "Pendidikan Pancasila", detail: "Buku Panduan Utama", url: "https://buku.kemdikbud.go.id/katalog/buku-panduan-guru-pendidikan-pancasila-untuk-sdmi-kelas-ii" },
+                { mapel: "Bahasa Inggris", detail: "My Next Words Grade 2", url: "https://buku.kemdikbud.go.id/katalog/buku-panduan-guru-bahasa-inggris-for-esl-students-my-next-words-grade-2-untuk-sd-kelas-ii" },
+                { mapel: "Seni Rupa", detail: "Panduan Guru Seni Rupa", url: "https://buku.kemdikbud.go.id/katalog/buku-panduan-guru-seni-rupa-untuk-sd-kelas-ii" },
+                { mapel: "Seni Musik", detail: "Panduan Guru Seni Musik", url: "https://buku.kemdikbud.go.id/katalog/buku-panduan-guru-seni-musik-untuk-sd-kelas-ii" },
+                { mapel: "Seni Tari", detail: "Panduan Guru Seni Tari", url: "https://buku.kemdikbud.go.id/katalog/buku-panduan-guru-seni-tari-untuk-sd-kelas-ii" },
+                { mapel: "Seni Teater", detail: "Panduan Guru Seni Teater", url: "https://buku.kemdikbud.go.id/katalog/buku-panduan-guru-seni-teater-untuk-sd-kelas-ii" }
+            ],
+            "3": [
+                { mapel: "Bahasa Indonesia", detail: "Kawan Seiring", url: "https://buku.kemdikbud.go.id/katalog/buku-panduan-guru-bahasa-indonesia-kawan-seiring-untuk-sd-kelas-iii" },
+                { mapel: "Matematika", detail: "Buku Panduan Utama", url: "https://buku.kemdikbud.go.id/katalog/buku-panduan-guru-matematika-untuk-sd-kelas-iii" },
+                { mapel: "Ilmu Pengetahuan Alam & Sosial (IPAS)", detail: "Panduan IPAS", url: "https://buku.kemdikbud.go.id/katalog/buku-panduan-guru-ilmu-pengetahuan-alam-dan-sosial-untuk-sd-kelas-iii" },
+                { mapel: "Pendidikan Pancasila", detail: "Buku Panduan Utama", url: "https://buku.kemdikbud.go.id/katalog/buku-panduan-guru-pendidikan-pancasila-untuk-sdmi-kelas-iii" },
+                { mapel: "Bahasa Inggris", detail: "My Next Words Grade 3", url: "https://buku.kemdikbud.go.id/katalog/buku-panduan-guru-bahasa-inggris-my-next-words-grade-3-untuk-sd-kelas-iii" },
+                { mapel: "Seni Rupa", detail: "Panduan Guru Seni Rupa", url: "https://buku.kemdikbud.go.id/katalog/buku-panduan-guru-seni-rupa-untuk-sd-kelas-iii" },
+                { mapel: "Seni Musik", detail: "Panduan Guru Seni Musik", url: "https://buku.kemdikbud.go.id/katalog/buku-panduan-guru-seni-musik-untuk-sd-kelas-iii" },
+                { mapel: "Seni Tari", detail: "Panduan Guru Seni Tari", url: "https://buku.kemdikbud.go.id/katalog/buku-panduan-guru-seni-tari-untuk-sd-kelas-iii" },
+                { mapel: "Seni Teater", detail: "Panduan Guru Seni Teater", url: "https://buku.kemdikbud.go.id/katalog/buku-panduan-guru-seni-teater-untuk-sd-kelas-iii" }
+            ],
+            "4": [
+                { mapel: "Bahasa Indonesia", detail: "Lihat Sekitar", url: "https://buku.kemdikbud.go.id/katalog/buku-panduan-guru-bahasa-indonesia-lihat-sekitar-untuk-sd-kelas-iv" },
+                { mapel: "Matematika Vol 1", detail: "Belajar Bersama Temanmu", url: "https://buku.kemdikbud.go.id/katalog/buku-panduan-guru-matematika-untuk-sekolah-dasar-kelas-iv-volume-1" },
+                { mapel: "Matematika Vol 2", detail: "Belajar Bersama Temanmu", url: "https://buku.kemdikbud.go.id/katalog/buku-panduan-guru-matematika-untuk-sekolah-dasar-kelas-iv-volume-2" },
+                { mapel: "Ilmu Pengetahuan Alam & Sosial (IPAS)", detail: "Panduan IPAS", url: "https://buku.kemdikbud.go.id/katalog/buku-panduan-guru-ilmu-pengetahuan-alam-dan-sosial-untuk-sd-kelas-iv" },
+                { mapel: "Pendidikan Pancasila", detail: "Buku Panduan Utama", url: "https://buku.kemdikbud.go.id/katalog/buku-panduan-guru-pendidikan-pancasila-untuk-sdmi-kelas-iv" },
+                { mapel: "Bahasa Inggris", detail: "My Next Words Grade 4", url: "https://buku.kemdikbud.go.id/katalog/buku-panduan-guru-bahasa-inggris-for-esl-students-my-next-words-grade-4-untuk-sd-kelas-iv" },
+                { mapel: "Seni Rupa", detail: "Panduan Guru Seni Rupa", url: "https://buku.kemdikbud.go.id/katalog/buku-panduan-guru-seni-rupa-untuk-sd-kelas-iv" },
+                { mapel: "Seni Musik", detail: "Panduan Guru Seni Musik", url: "https://buku.kemdikbud.go.id/katalog/buku-panduan-guru-seni-musik-untuk-sd-kelas-iv" }
+            ],
+            "5": [
+                { mapel: "Bahasa Indonesia", detail: "Bergerak Bersama", url: "https://buku.kemdikbud.go.id/katalog/buku-panduan-guru-bahasa-indonesia-bergerak-bersama-untuk-sd-kelas-v" },
+                { mapel: "Matematika", detail: "Buku Panduan Utama", url: "https://buku.kemdikbud.go.id/katalog/buku-panduan-guru-matematika-untuk-sd-kelas-v" },
+                { mapel: "Ilmu Pengetahuan Alam & Sosial (IPAS)", detail: "Panduan IPAS", url: "https://buku.kemdikbud.go.id/katalog/buku-panduan-guru-ilmu-pengetahuan-alam-dan-sosial-untuk-sd-kelas-v" },
+                { mapel: "Pendidikan Pancasila", detail: "Buku Panduan Utama", url: "https://buku.kemdikbud.go.id/katalog/buku-panduan-guru-pendidikan-pancasila-untuk-sdmi-kelas-v" },
+                { mapel: "Bahasa Inggris", detail: "My Next Words Grade 5", url: "https://buku.kemdikbud.go.id/katalog/buku-panduan-guru-bahasa-inggris-for-esl-students-my-next-words-grade-5-untuk-sd-kelas-v" },
+                { mapel: "Seni Rupa", detail: "Panduan Guru Seni Rupa", url: "https://buku.kemdikbud.go.id/katalog/buku-panduan-guru-seni-rupa-untuk-sd-kelas-v" },
+                { mapel: "Seni Musik", detail: "Panduan Guru Seni Musik", url: "https://buku.kemdikbud.go.id/katalog/buku-panduan-guru-seni-musik-untuk-sd-kelas-v" }
+            ],
+            "6": [
+                { mapel: "Bahasa Indonesia", detail: "Anak-Anak Dunia", url: "https://buku.kemdikbud.go.id/katalog/buku-panduan-guru-bahasa-indonesia-anak-anak-dunia-untuk-sd-kelas-vi" },
+                { mapel: "Matematika", detail: "Buku Panduan Utama", url: "https://buku.kemdikbud.go.id/katalog/buku-panduan-guru-matematika-untuk-sd-kelas-vi" },
+                { mapel: "Ilmu Pengetahuan Alam & Sosial (IPAS)", detail: "Panduan IPAS", url: "https://buku.kemdikbud.go.id/katalog/buku-panduan-guru-ilmu-pengetahuan-alam-dan-sosial-untuk-sd-kelas-vi" },
+                { mapel: "Pendidikan Pancasila", detail: "Buku Panduan Utama", url: "https://buku.kemdikbud.go.id/katalog/buku-panduan-guru-pendidikan-pancasila-untuk-sdmi-kelas-vi" },
+                { mapel: "Bahasa Inggris", detail: "My Next Words Grade 6", url: "https://buku.kemdikbud.go.id/katalog/buku-panduan-guru-bahasa-inggris-for-esl-students-my-next-words-grade-6-untuk-sd-kelas-vi" },
+                { mapel: "Seni Rupa", detail: "Panduan Guru Seni Rupa", url: "https://buku.kemdikbud.go.id/katalog/buku-panduan-guru-seni-rupa-untuk-sd-kelas-vi" },
+                { mapel: "Seni Musik", detail: "Panduan Guru Seni Musik", url: "https://buku.kemdikbud.go.id/katalog/buku-panduan-guru-seni-musik-untuk-sd-kelas-vi" }
+            ]
+        };
+
+        // Fungsi Memasang Link Buku secara Dinamis dan Rapih
+        function tampilkanPustakaBuku() {
+            const wadah = document.getElementById("wadah-buku-dinamis");
+            const daftarBuku = databaseBukuLengkap[nomorKelas] || databaseBukuLengkap["1"];
+            
+            wadah.innerHTML = "";
+            daftarBuku.forEach(buku => {
+                wadah.innerHTML += `
+                    <div class="flex justify-between items-center p-3 bg-gray-50 rounded-lg border border-gray-200 text-xs shadow-sm">
+                        <div>
+                            <span class="font-bold block text-gray-800">${buku.mapel}</span>
+                            <span class="text-[10px] text-gray-400 font-medium">${buku.detail}</span>
+                        </div>
+                        <a href="${buku.url}" target="_blank" class="bg-red-600 text-white text-[10px] px-2.5 py-1.5 rounded font-bold hover:bg-red-700 transition">Buka Katalog</a>
+                    </div>
+                `;
+            });
+        }
+
+        async function muatIdentitasSekolah() {
+            try {
+                const docRef = doc(db, "profil_sekolah", "identitas");
+                const docSnap = await getDoc(docRef);
+                if (docSnap.exists()) {
+                    document.getElementById("nama-sekolah-mini").innerText = docSnap.data().nama_sekolah;
+                }
+            } catch (e) { console.error(e); }
+        }
+
+        async function muatDataSiswaAsli() {
+            const tabel = document.getElementById("tabel-siswa");
+            try {
+                const querySnapshot = await getDocs(collection(db, "data_siswa", nomorKelas, "daftar"));
+                
+                if (querySnapshot.empty) {
+                    tabel.innerHTML = `<tr><td colspan="4" class="p-4 text-center text-gray-500 text-xs">📭 Belum ada data murid di kelas ini. Silakan daftarkan murid baru terlebih dahulu melalui Panel TU.</td></tr>`;
+                    return;
+                }
+
+                tabel.innerHTML = ""; 
+                
+                querySnapshot.forEach((res) => {
+                    const idDokumen = res.id;
+                    const siswa = res.data();
+                    
+                    let nomorAman = siswa.no_wa ? siswa.no_wa.toString().trim().replace(/[^0-9]/g, '') : '';
+                    if (nomorAman.startsWith('0')) {
+                        nomorAman = '62' + nomorAman.slice(1);
+                    }
+
+                    const barisHtml = `
+                        <tr class="border-b hover:bg-gray-50">
+                            <td class="p-2">
+                                <span class="font-bold block text-gray-900">${siswa.nama_murid}</span>
+                                <span class="text-[10px] text-gray-400">Wali: ${siswa.nama_wali}</span>
+                            </td>
+                            <td class="p-2 text-center text-gray-600">${siswa.hadir || 0} H / ${siswa.sakit || 0} S / ${siswa.absen || 0} A</td>
+                            <td class="p-2 text-center font-bold text-green-600">${siswa.nilai || 0}</td>
+                            <td class="p-2 text-center space-y-1 md:space-y-0 md:space-x-1">
+                                <button onclick="kirimLaporanWA('${siswa.nama_murid}', '${nomorAman}', '${siswa.hadir || 0}', '${siswa.sakit || 0}', '${siswa.nilai || 0}', '${siswa.catatan || 'Belum ada catatan.'}')" class="bg-green-600 text-white text-[10px] font-bold px-2 py-1 rounded hover:bg-green-700 shadow-sm block w-full md:inline-block">Kirim WA</button>
+                                <button onclick="editDataSiswa('${idDokumen}', '${siswa.nama_murid}', ${siswa.hadir || 0}, ${siswa.sakit || 0}, ${siswa.absen || 0}, ${siswa.nilai || 0}, '${siswa.catatan || ''}')" class="bg-blue-600 text-white text-[10px] font-bold px-2 py-1 rounded hover:bg-blue-700 shadow-sm block w-full md:inline-block">📝 Edit</button>
+                            </td>
+                        </tr>
+                    `;
+                    tabel.innerHTML += barisHtml;
+                });
+
+            } catch (error) {
+                console.error("Gagal memuat siswa:", error);
+                tabel.innerHTML = `<tr><td colspan="4" class="p-4 text-center text-red-500 text-xs">⚠️ Gagal memuat data siswa asli.</td></tr>`;
+            }
+        }
+
+        window.editDataSiswa = async function(id, nama, hadir, sakit, absen, nilai, catatan) {
+            const baruHadir = prompt(`[${nama}] - Masukkan Jumlah Hari Hadir:`, hadir);
+            if (baruHadir === null) return;
+            const baruSakit = prompt(`[${nama}] - Masukkan Jumlah Hari Sakit:`, sakit);
+            if (baruSakit === null) return;
+            const baruAbsen = prompt(`[${nama}] - Masukkan Jumlah Hari Alfa/Tanpa Keterangan:`, absen);
+            if (baruAbsen === null) return;
+            const baruNilai = prompt(`[${nama}] - Masukkan Nilai Rata-rata:`, nilai);
+            if (baruNilai === null) return;
+            const baruCatatan = prompt(`[${nama}] - Masukkan Catatan Perkembangan Wali Kelas:`, catatan);
+            if (baruCatatan === null) return;
+
+            try {
+                const docRef = doc(db, "data_siswa", nomorKelas, "daftar", id);
+                await updateDoc(docRef, {
+                    hadir: parseInt(baruHadir) || 0,
+                    sakit: parseInt(baruSakit) || 0,
+                    absen: parseInt(baruAbsen) || 0,
+                    nilai: parseFloat(baruNilai) || 0,
+                    catatan: baruCatatan
+                });
+                alert("🎉 Data perkembangan " + nama + " berhasil diperbarui!");
+                muatDataSiswaAsli(); 
+            } catch (e) {
+                alert("Gagal memperbarui data: " + e.message);
+            }
+        }
+
+        window.onload = function() {
+            muatIdentitasSekolah();
+            tampilkanPustakaBuku();
+            muatDataSiswaAsli();
+        };
+    </script>
+
+    <script>
+        function kirimLaporanWA(namaSiswa, nomorWali, hadir, sakit, nilai, catatan) {
+            const namaSekolah = document.getElementById("nama-sekolah-mini").innerText;
+            const nomorKelas = document.getElementById("nomor-kelas-title").innerText;
+            
+            const isiPesan = `Yth. Bapak/Ibu Wali Murid dari *${namaSiswa}*,\n\n` +
+                             `Berikut adalah Laporan Perkembangan Siswa Berkala dari *${namaSekolah}*:\n\n` +
+                             `* Kelas: ${nomorKelas}\n` +
+                             `* Kehadiran: ${hadir} Hari Hadir, ${sakit} Hari Sakit\n` +
+                             `* Nilai Rata-rata: ${nilai}\n` +
+                             `* Catatan Guru: _${catatan}_\n\n` +
+                             `Terima kasih atas bimbingan dan kerja samanya di rumah.\n\n` +
+                             `-- *Wali Kelas ${nomorKelas}* --`;
+
+            const urlWhatsApp = `https://api.whatsapp.com/send?phone=${nomorWali}&text=${encodeURIComponent(isiPesan)}`;
+            window.open(urlWhatsApp, '_blank');
+        }
+    </script>
+</body>
+</html>
