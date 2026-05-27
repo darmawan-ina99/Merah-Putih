@@ -1,0 +1,128 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Panel Kepala Sekolah - Input Data Otomatis</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+</head>
+<body class="bg-gray-100 font-sans">
+
+    <header class="bg-red-700 text-white shadow-md p-4 flex justify-between items-center">
+        <h1 class="text-lg font-bold uppercase tracking-wider">⚙️ Panel Setup Kepala Sekolah</h1>
+        <a href="index.html" class="bg-white text-red-700 text-xs font-bold px-3 py-1.5 rounded hover:bg-gray-100 transition shadow">
+            ⬅️ Kembali ke Dasbor
+        </a>
+    </header>
+
+    <main class="container mx-auto px-4 py-8 max-w-2xl">
+        <div class="bg-white rounded-xl shadow-md p-6 border-t-4 border-red-600">
+            <h2 class="text-xl font-bold text-gray-800 mb-2">Identitas & Personil Sekolah</h2>
+            <p class="text-xs text-gray-500 mb-6">Silakan isi formulir di bawah ini. Begitu disimpan, seluruh data di dasbor utama akan otomatis berubah secara real-time.</p>
+
+            <form id="form-kasek" class="space-y-4">
+                <div>
+                    <label class="block text-xs font-bold uppercase text-gray-700 mb-1">Nama Sekolah</label>
+                    <input type="text" id="input-nama-sekolah" required placeholder="Contoh: SDN 1 Garuda Merdeka" class="w-full p-2.5 border rounded-lg text-sm focus:ring-2 focus:ring-red-500 outline-none">
+                </div>
+
+                <div>
+                    <label class="block text-xs font-bold uppercase text-gray-700 mb-1">Alamat Sekolah</label>
+                    <textarea id="input-alamat" required rows="2" placeholder="Contoh: Jl. Merdeka No. 17, Kecamatan Merdeka" class="w-full p-2.5 border rounded-lg text-sm focus:ring-2 focus:ring-red-500 outline-none"></textarea>
+                </div>
+
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                    <div>
+                        <label class="block text-xs font-bold uppercase text-gray-700 mb-1">Nama Kepala Sekolah</label>
+                        <input type="text" id="input-nama-kasek" required placeholder="Nama Lengkap & Gelar" class="w-full p-2.5 border rounded-lg text-sm focus:ring-2 focus:ring-red-500 outline-none">
+                    </div>
+                    <div>
+                        <label class="block text-xs font-bold uppercase text-gray-700 mb-1">NIP Kepala Sekolah</label>
+                        <input type="text" id="input-nip-kasek" required placeholder="Nomor Induk Pegawai" class="w-full p-2.5 border rounded-lg text-sm focus:ring-2 focus:ring-red-500 outline-none">
+                    </div>
+                </div>
+
+                <hr class="my-4">
+
+                <div>
+                    <label class="block text-xs font-bold uppercase text-gray-700 mb-1">Nama Guru BK (Bimbingan Konseling)</label>
+                    <input type="text" id="input-guru-bk" required placeholder="Nama Lengkap Guru BK" class="w-full p-2.5 border rounded-lg text-sm focus:ring-2 focus:ring-red-500 outline-none">
+                </div>
+
+                <div>
+                    <label class="block text-xs font-bold uppercase text-gray-700 mb-1">Nama Staf Tata Usaha (TU)</label>
+                    <input type="text" id="input-staf-tu" required placeholder="Nama Lengkap Staf TU" class="w-full p-2.5 border rounded-lg text-sm focus:ring-2 focus:ring-red-500 outline-none">
+                </div>
+
+                <button type="submit" id="btn-simpan" class="w-full bg-red-600 hover:bg-red-700 text-white font-bold py-3 px-4 rounded-lg shadow transition text-sm mt-6">
+                    💾 Simpan & Terapkan Data Sekolah
+                </button>
+            </form>
+        </div>
+    </main>
+
+    <script type="module">
+        import { initializeApp } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-app.js";
+        import { getFirestore, doc, setDoc, getDoc } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-firestore.js";
+
+        // Firebase Config milik Pak Darmawan
+        const firebaseConfig = {
+          apiKey: "AIzaSyCCfF6fGPrZWMOVcVUIDzzcLC4dFEl9LBY",
+          authDomain: "sekolah-4e62f.firebaseapp.com",
+          projectId: "sekolah-4e62f",
+          storageBucket: "sekolah-4e62f.firebasestorage.app",
+          messagingSenderId: "1018984142264",
+          appId: "1:1018984142264:web:e34fe5fd50766a6100ab4d"
+        };
+
+        const app = initializeApp(firebaseConfig);
+        const db = getFirestore(app);
+
+        // Ambil data lama dari Firebase (jika ada) agar tidak perlu mengetik ulang
+        async function muatDataLama() {
+            try {
+                const docRef = doc(db, "profil_sekolah", "identitas");
+                const docSnap = await getDoc(docRef);
+                if (docSnap.exists()) {
+                    const data = docSnap.data();
+                    document.getElementById("input-nama-sekolah").value = data.nama_sekolah || '';
+                    document.getElementById("input-alamat").value = data.alamat || '';
+                    document.getElementById("input-nama-kasek").value = data.kepala_sekolah?.nama || '';
+                    document.getElementById("input-nip-kasek").value = data.kepala_sekolah?.nip || '';
+                    document.getElementById("input-guru-bk").value = data.nama_guru_bk || '';
+                    document.getElementById("input-staf-tu").value = data.nama_staf_tu || '';
+                }
+            } catch (e) { console.error(e); }
+        }
+
+        // Fungsi menyimpan data otomatis ke Firebase saat tombol diklik
+        document.getElementById("form-kasek").addEventListener("submit", async (e) => {
+            e.preventDefault();
+            const btn = document.getElementById("btn-simpan");
+            btn.innerText = "⏳ Sedang Menyimpan Data...";
+            btn.disabled = true;
+
+            try {
+                await setDoc(doc(db, "profil_sekolah", "identitas"), {
+                    nama_sekolah: document.getElementById("input-nama-sekolah").value,
+                    alamat: document.getElementById("input-alamat").value,
+                    nama_guru_bk: document.getElementById("input-guru-bk").value,
+                    nama_staf_tu: document.getElementById("input-staf-tu").value,
+                    kepala_sekolah: {
+                        nama: document.getElementById("input-nama-kasek").value,
+                        nip: document.getElementById("input-nip-kasek").value
+                    }
+                });
+                alert("🎉 Data Sekolah Berhasil Disimpan!");
+                window.location.href = "index.html"; 
+            } catch (error) {
+                alert("Gagal menyimpan data: " + error.message);
+                btn.innerText = "💾 Simpan & Terapkan Data Sekolah";
+                btn.disabled = false;
+            }
+        });
+
+        window.onload = muatDataLama;
+    </script>
+</body>
+</html>
