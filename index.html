@@ -1,0 +1,237 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Papan Struktur Organisasi Resmi Sekolah</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <style>
+        .garis-komando { border-left: 2px solid #374151; }
+        .garis-datar { border-top: 2px solid #374151; }
+        .garis-koordinasi { border-top: 2px dashed #9ca3af; }
+    </style>
+</head>
+<body class="bg-gray-200 font-sans text-gray-800 p-2 md:p-6 text-[11px] md:text-xs">
+
+    <div class="max-w-6xl mx-auto bg-white border-4 border-gray-700 rounded-lg shadow-2xl p-4 md:p-6 space-y-6">
+        
+        <div class="text-center border-b-2 border-gray-800 pb-4">
+            <h1 class="text-lg md:text-2xl font-bold uppercase tracking-widest text-gray-900">Struktur Organisasi Sekolah</h1>
+            <h2 id="nama-sekolah-papan" class="text-base md:text-xl font-extrabold uppercase text-red-600">SDN 1 CIHERANG</h2>
+            <p class="text-[9px] md:text-xs text-gray-500 font-bold mt-0.5 tracking-wider">TAHUN PELAJARAN: 2026 / 2027</p>
+        </div>
+
+        <div class="flex flex-col items-center w-full min-w-[750px] overflow-x-auto pb-4">
+            
+            <div class="flex items-center justify-center space-x-12 relative w-full max-w-2xl">
+                <div class="w-44 bg-yellow-100 border border-yellow-500 rounded p-1.5 flex items-center space-x-2 shadow-sm z-10">
+                    <div class="w-10 h-12 bg-gray-300 border border-gray-400 flex items-center justify-center text-[8px] font-bold text-gray-500">FOTO</div>
+                    <div>
+                        <span class="text-[9px] font-bold text-yellow-800 block uppercase">Kepala Sekolah</span>
+                        <span id="papan-kasek" class="font-bold text-gray-900 block truncate">Memuat...</span>
+                        <span id="papan-nip-kasek" class="text-[8px] text-gray-500 block">NIP. -</span>
+                    </div>
+                </div>
+
+                <div class="w-16 border-t-2 border-dashed border-gray-400 absolute left-[165px]"></div>
+
+                <div class="w-44 bg-yellow-50 border border-yellow-400 rounded p-1.5 flex items-center space-x-2 shadow-sm z-10">
+                    <div class="w-10 h-12 bg-gray-300 border border-gray-400 flex items-center justify-center text-[8px] font-bold text-gray-500">FOTO</div>
+                    <div>
+                        <span class="text-[9px] font-bold text-amber-700 block uppercase">Komite Sekolah</span>
+                        <span id="papan-komite" class="font-bold text-gray-900 block truncate">Memuat...</span>
+                    </div>
+                </div>
+            </div>
+
+            <div class="w-0.5 h-4 bg-gray-700"></div>
+
+            <div class="w-full max-w-4xl relative">
+                <div class="absolute top-0 left-[12%] right-[12%] h-0.5 bg-gray-700"></div>
+                
+                <div class="flex justify-between px-[12%]">
+                    <div class="w-0.5 h-4 bg-gray-700"></div>
+                    <div class="w-0.5 h-4 bg-gray-700"></div>
+                    <div class="w-0.5 h-4 bg-gray-700"></div>
+                </div>
+
+                <div class="flex justify-between items-start w-full">
+                    <div class="w-40 bg-sky-100 border border-sky-500 rounded p-1.5 flex items-center space-x-2 shadow-sm">
+                        <div class="w-9 h-11 bg-gray-300 border border-gray-400 flex items-center justify-center text-[8px] font-bold text-gray-500">FOTO</div>
+                        <div>
+                            <span class="text-[9px] font-bold text-sky-800 block uppercase">Kesiswaan / BK</span>
+                            <span id="papan-bk" class="font-bold text-gray-900 block truncate">Memuat...</span>
+                        </div>
+                    </div>
+
+                    <div class="w-40 bg-cyan-500 text-white border border-cyan-600 rounded p-2 text-center font-bold uppercase tracking-wider shadow-sm mt-[-4px]">
+                        JABATAN / PTK
+                    </div>
+
+                    <div class="w-40 bg-sky-100 border border-sky-500 rounded p-1.5 flex items-center space-x-2 shadow-sm">
+                        <div class="w-9 h-11 bg-gray-300 border border-gray-400 flex items-center justify-center text-[8px] font-bold text-gray-500">FOTO</div>
+                        <div>
+                            <span class="text-[9px] font-bold text-sky-800 block uppercase">Tata Usaha</span>
+                            <span id="papan-tu" class="font-bold text-gray-900 block truncate">Memuat...</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="w-0.5 h-6 bg-gray-700"></div>
+
+            <div class="w-full relative">
+                <div class="absolute top-0 left-[4%] right-[4%] h-0.5 bg-gray-700"></div>
+
+                <div id="papan-jejer-guru" class="grid grid-cols-9 gap-1.5 pt-4 w-full">
+                    
+                    <div class="text-center text-gray-400 py-4 col-span-9 italic">Menyusun barisan dewan guru...</div>
+
+                </div>
+            </div>
+
+            <div class="w-full relative mt-4 flex flex-col items-center">
+                <div class="w-0.5 h-4 bg-gray-700"></div>
+                
+                <div class="w-44 bg-yellow-50 border border-amber-400 rounded p-1.5 flex items-center space-x-2 shadow-sm">
+                    <div class="w-9 h-11 bg-gray-300 border border-gray-400 flex items-center justify-center text-[8px] font-bold text-gray-500">FOTO</div>
+                    <div>
+                        <span class="text-[9px] font-bold text-amber-800 block uppercase">Penjaga Sekolah</span>
+                        <div id="papan-supporting" class="font-bold text-gray-900 space-y-0.5">Memuat...</div>
+                    </div>
+                </div>
+
+                <div class="w-0.5 h-4 bg-gray-700"></div>
+                <div class="w-32 border-t border-gray-400"></div>
+                <div class="flex justify-between w-32"><div class="w-0.5 h-3 bg-gray-700"></div><div class="w-0.5 h-3 bg-gray-700"></div></div>
+
+                <div class="flex space-x-6 text-center text-[10px] font-bold uppercase mt-1">
+                    <div class="bg-gray-800 text-white px-4 py-1 rounded shadow">👨‍🎓 SISWA</div>
+                    <div class="bg-gray-800 text-white px-4 py-1 rounded shadow">🏙️ MASYARAKAT SEKITAR</div>
+                </div>
+            </div>
+
+        </div>
+
+        <section class="bg-gray-50 rounded-xl p-4 border border-gray-300 mt-4">
+            <div class="text-[10px] font-bold text-red-600 uppercase mb-1">⚙️ Pusat Pengisian Data Administrasi (Akses Pengurus)</div>
+            <div class="grid grid-cols-3 gap-2">
+                <a href="kasek.html" class="bg-gray-800 hover:bg-gray-900 text-white text-center font-bold py-2 rounded text-[10px] shadow transition">
+                    👑 1. Input Data Kasek / TU / BK
+                </a>
+                <a href="pegawai.html" class="bg-blue-600 hover:bg-blue-700 text-white text-center font-bold py-2 rounded text-[10px] shadow transition">
+                    📋 2. Input Semua Guru & Penjaga
+                </a>
+                <a href="tu.html" class="bg-gray-800 hover:bg-gray-900 text-white text-center font-bold py-2 rounded text-[10px] shadow transition">
+                    💻 3. Input Data Murid Baru
+                </a>
+            </div>
+        </section>
+
+    </div>
+
+    <script type="module">
+        import { initializeApp } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-app.js";
+        import { getFirestore, doc, getDoc, collection, getDocs } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-firestore.js";
+
+        const firebaseConfig = {
+          apiKey: "AIzaSyCCfF6fGPrZWMOVcVUIDzzcLC4dFEl9LBY",
+          authDomain: "sekolah-4e62f.firebaseapp.com",
+          projectId: "sekolah-4e62f",
+          storageBucket: "sekolah-4e62f.firebasestorage.app",
+          messagingSenderId: "1018984142264",
+          appId: "1:1018984142264:web:e34fe5fd50766a6100ab4d"
+        };
+
+        const app = initializeApp(firebaseConfig);
+        const db = getFirestore(app);
+
+        async function muatStrukturUtama() {
+            try {
+                const docSnap = await getDoc(doc(db, "profil_sekolah", "identitas"));
+                if (docSnap.exists()) {
+                    const data = docSnap.data();
+                    document.getElementById("nama-sekolah-papan").innerText = data.nama_sekolah || "SDN 1 CIHERANG";
+                    document.getElementById("papan-kasek").innerText = data.nama_kasek || "-";
+                    document.getElementById("papan-nip-kasek").innerText = "NIP. " + (data.nip_kasek || "-");
+                    document.getElementById("papan-tu").innerText = data.nama_tu || "-";
+                    document.getElementById("papan-bk").innerText = data.nama_bk || "-";
+                    document.getElementById("papan-komite").innerText = data.nama_komite || "Kurdi";
+                }
+            } catch (e) { console.error(e); }
+        }
+
+        async function susunDaftarGuruPapan() {
+            try {
+                const snapshot = await getDocs(collection(db, "data_kepegawaian"));
+                
+                // Siapkan wadah kosong terstruktur agar susunan urut dari samping kiri ke kanan
+                let petaGuru = {
+                    "Wali Kelas 1": { nama: "-", nip: "Belum diinput", id: "1" },
+                    "Wali Kelas 2": { nama: "-", nip: "Belum diinput", id: "2" },
+                    "Wali Kelas 3": { nama: "-", nip: "Belum diinput", id: "3" },
+                    "Wali Kelas 4": { nama: "-", nip: "Belum diinput", id: "4" },
+                    "Wali Kelas 5": { nama: "-", nip: "Belum diinput", id: "5" },
+                    "Wali Kelas 6": { nama: "-", nip: "Belum diinput", id: "6" },
+                    "Guru Agama Islam": { nama: "-", nip: "-", id: "1" },
+                    "Guru PJOK": { nama: "-", nip: "-", id: "1" },
+                    "Guru B. Ing": { nama: "-", nip: "-", id: "1" }
+                };
+
+                let penjangas = [];
+
+                snapshot.forEach((docRes) => {
+                    const p = docRes.data();
+                    const jab = p.jabatan;
+
+                    if (petaGuru[jab]) {
+                        petaGuru[jab].nama = p.nama;
+                        petaGuru[jab].nip = p.nip;
+                    } else if (jab === "Penjaga Sekolah" || jab.includes("Satpam") || jab.includes("Keamanan")) {
+                        penjangas.push(p.nama);
+                    }
+                });
+
+                // Cetak barisan kotak guru secara horizontal ke dalam HTML
+                const wadahPapanGuru = document.getElementById("papan-jejer-guru");
+                wadahPapanGuru.innerHTML = "";
+
+                for (const [jabatan, data] of Object.entries(petaGuru)) {
+                    const isWali = jabatan.startsWith("Wali Kelas");
+                    const labelSingkat = isWali ? jabatan.replace("Wali Kelas", "Wali Kelas") : jabatan;
+                    
+                    // Link aktif khusus Wali Kelas agar jika diklik langsung meluncur ke data nilai kelas tersebut
+                    const linkHalaman = isWali ? `href="kelas.html?id=${data.id}"` : `href="#"`;
+                    const borderWarna = isWali ? 'border-emerald-500 bg-emerald-50' : 'border-purple-500 bg-purple-50';
+                    const teksWarna = isWali ? 'text-emerald-800' : 'text-purple-800';
+
+                    wadahPapanGuru.innerHTML += `
+                        <a ${linkHalaman} class="border ${borderWarna} rounded p-1 text-center shadow-sm block hover:scale-105 transition relative group">
+                            <div class="w-0.5 h-2 bg-gray-700 absolute top-[-8px] left-[50%]"></div>
+                            
+                            <div class="w-8 h-10 bg-gray-300 border border-gray-400 flex items-center justify-center text-[7px] font-bold text-gray-500 mx-auto mb-1">FOTO</div>
+                            <span class="text-[8px] font-bold ${teksWarna} block uppercase leading-none mb-0.5">${labelSingkat}</span>
+                            <span class="font-bold text-gray-900 block truncate text-[10px] leading-tight">${data.nama}</span>
+                            <span class="text-[7px] text-gray-400 block truncate">NIP. ${data.nip}</span>
+                        </a>
+                    `;
+                }
+
+                // Cetak Penjaga Sekolah
+                const wadahSupporting = document.getElementById("papan-supporting");
+                if (penjangas.length > 0) {
+                    wadahSupporting.innerText = penjangas.join(" & ");
+                } else {
+                    wadahSupporting.innerText = "Edy";
+                }
+
+            } catch (e) { console.error(e); }
+        }
+
+        window.onload = function() {
+            muatStrukturUtama();
+            susunDaftarGuruPapan();
+        }
+    </script>
+</body>
+</html>
