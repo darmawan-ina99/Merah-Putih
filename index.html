@@ -1,0 +1,87 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Aplikasi Merah Putih - Kurikulum Merdeka</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+</head>
+<body class="bg-gray-100 font-sans">
+
+    <header class="bg-red-600 text-white text-center py-6 shadow-md border-b-4 border-white">
+        <h1 id="nama-sekolah-title" class="text-xl md:text-2xl font-bold uppercase tracking-wider">Aplikasi Merah Putih</h1>
+        <p class="text-xs md:text-sm opacity-90 mt-1">Sistem Administrasi & Kelas Digital Kurikulum Merdeka</p>
+    </header>
+
+    <main class="container mx-auto px-4 py-6 space-y-6 max-w-xl">
+        
+        <div class="bg-white rounded-xl shadow p-5 border-t-4 border-red-500">
+            <div class="text-xs font-bold text-red-500 uppercase mb-1">Akses Guru Kelas</div>
+            <h2 class="text-base font-bold text-gray-900 mb-3">📝 Masuk ke Ruang Kelas Digital</h2>
+            
+            <div class="grid grid-cols-3 gap-2">
+                <a href="kelas.html?id=1" class="bg-red-600 hover:bg-red-700 text-white text-center font-bold py-3 rounded-lg text-xs shadow transition">Kls 1</a>
+                <a href="kelas.html?id=2" class="bg-red-600 hover:bg-red-700 text-white text-center font-bold py-3 rounded-lg text-xs shadow transition">Kls 2</a>
+                <a href="kelas.html?id=3" class="bg-red-600 hover:bg-red-700 text-white text-center font-bold py-3 rounded-lg text-xs shadow transition">Kls 3</a>
+                <a href="kelas.html?id=4" class="bg-red-600 hover:bg-red-700 text-white text-center font-bold py-3 rounded-lg text-xs shadow transition">Kls 4</a>
+                <a href="kelas.html?id=5" class="bg-red-600 hover:bg-red-700 text-white text-center font-bold py-3 rounded-lg text-xs shadow transition">Kls 5</a>
+                <a href="kelas.html?id=6" class="bg-red-600 hover:bg-red-700 text-white text-center font-bold py-3 rounded-lg text-xs shadow transition">Kls 6</a>
+            </div>
+        </div>
+
+        <div class="bg-white rounded-xl shadow p-5 border-t-4 border-red-500 space-y-3">
+            <div class="text-xs font-bold text-red-500 uppercase mb-1">Administrasi & Manajemen</div>
+            <h2 class="text-base font-bold text-gray-900 mb-2">💼 Panel Kerja Staff Sekolah</h2>
+            
+            <a href="pegawai.html" class="block w-full bg-blue-600 hover:bg-blue-700 text-white text-center font-bold py-3 px-4 rounded-lg text-xs shadow transition">
+                📋 Daftar Pegawai & Guru (SIM-PTK)
+            </a>
+
+            <div class="grid grid-cols-2 gap-2">
+                <a href="kasek.html" class="bg-gray-800 hover:bg-gray-900 text-white text-center font-bold py-3 px-2 rounded-lg text-xs shadow transition">
+                    👑 Panel Kasek
+                </a>
+                <a href="tu.html" class="bg-gray-800 hover:bg-gray-900 text-white text-center font-bold py-3 px-2 rounded-lg text-xs shadow transition">
+                    💻 Panel TU (Siswa)
+                </a>
+            </div>
+        </div>
+
+    </main>
+
+    <script type="module">
+        import { initializeApp } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-app.js";
+        import { getFirestore, doc, getDoc } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-firestore.js";
+
+        // Konfigurasi Database Firebase Merah Putih
+        const firebaseConfig = {
+          apiKey: "AIzaSyCCfF6fGPrZWMOVcVUIDzzcLC4dFEl9LBY",
+          authDomain: "sekolah-4e62f.firebaseapp.com",
+          projectId: "sekolah-4e62f",
+          storageBucket: "sekolah-4e62f.firebasestorage.app",
+          messagingSenderId: "1018984142264",
+          appId: "1:1018984142264:web:e34fe5fd50766a6100ab4d"
+        };
+
+        const app = initializeApp(firebaseConfig);
+        const db = getFirestore(app);
+
+        // Memuat Nama Sekolah secara Otomatis dari Panel Kasek
+        async function ambilNamaSekolah() {
+            try {
+                const docRef = doc(db, "profil_sekolah", "identitas");
+                const docSnap = await getDoc(docRef);
+                if (docSnap.exists()) {
+                    document.getElementById("nama-sekolah-title").innerText = docSnap.data().nama_sekolah;
+                }
+            } catch (error) {
+                console.error("Gagal mengambil nama sekolah:", error);
+            }
+        }
+
+        // Jalankan fungsi otomatis saat halaman terbuka
+        window.onload = ambilNamaSekolah;
+    </script>
+
+</body>
+</html>
